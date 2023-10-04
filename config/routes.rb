@@ -1,8 +1,30 @@
 Rails.application.routes.draw do
   devise_for :users
   root to: "pages#home"
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
-  # Defines the root path route ("/")
-  # root "articles#index"
+  resources :cards, only: [:index, :show]
+
+  resources :trades do
+    resources :requests, only: [:new, :create]
+  end
+
+  resources :requests, only: [:destroy]
+
+  resources :collections, only: [:index, :show, :new, :create, :edit, :update, :destroy] do
+    resources :cards, only: [:new, :create, :edit, :update, :destroy]
+  end
+
+  resources :wantlists, only: [:index, :show, :new, :create, :edit, :update, :destroy]
+
+  resources :trade_items, only: [:index, :show]
+
+  resources :users, only: [] do
+    resources :collections, only: [:index, :show], controller: 'users/collections'
+    resources :trades, only: [:index, :show], controller: 'users/trades'
+  end
+
+  get '/search', to: 'application#search'
+
+  patch "/requests/:id/accept", to: "requests#accept", as: "accept"
+  patch "/requests/:id/reject", to: "requests#reject", as: "reject"
 end
