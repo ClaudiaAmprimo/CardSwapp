@@ -1,8 +1,8 @@
 class TradeItemsController < ApplicationController
 
   def index
+    @wantlists = policy_scope(Wantlist)
     @trade_items = TradeItem.all
-    authorize @trade_items
   end
 
   def show

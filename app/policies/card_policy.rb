@@ -6,11 +6,11 @@ class CardPolicy < ApplicationPolicy
     end
 
     def index?
-      return true
+      true
     end
 
     def show?
-      return true
+      true
     end
   end
 end

@@ -5,12 +5,8 @@ class TradePolicy < ApplicationPolicy
       scope.all
     end
 
-    def index?
-      true
-    end
-
     def show?
-      true 
+      true
     end
   end
 end

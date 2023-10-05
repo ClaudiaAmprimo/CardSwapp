@@ -1,7 +1,7 @@
 class TradesController < ApplicationController
   def index
-    @trade = Trade.all
-    authorize @trades
+    @trades = policy_scope(Trade)
+    @trades = Trade.all
   end
 
   def show

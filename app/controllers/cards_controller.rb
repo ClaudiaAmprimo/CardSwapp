@@ -1,11 +1,11 @@
 class CardsController < ApplicationController
   def index
-    @card = Card.all
-    authorize @cards
+    @cards = policy_scope(Card)
+    @cards = Card.all
   end
 
   def show
     @card = Card.find(params[:id])
-    authorize @cards
+    authorize @card
   end
 end

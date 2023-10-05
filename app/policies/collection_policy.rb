@@ -5,12 +5,18 @@ class CollectionPolicy < ApplicationPolicy
       scope.all
     end
 
+    def new?
+      # user.present?
+      user.present?.tap { |result| Rails.logger.debug("Authorization result: #{result}") }
+    end
+
     def show?
-      return true
+      true
     end
 
     def create?
-      return true
+      # return true
+      user.present?
     end
 
     def update?

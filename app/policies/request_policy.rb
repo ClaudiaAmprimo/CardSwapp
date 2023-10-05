@@ -5,6 +5,10 @@ class RequestPolicy < ApplicationPolicy
       scope.all
     end
 
+    def new?
+      user.present? 
+    end
+
     def create?
       user.present?
     end

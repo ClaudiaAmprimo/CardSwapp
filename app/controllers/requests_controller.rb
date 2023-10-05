@@ -4,7 +4,7 @@ class RequestsController < ApplicationController
 
   def new
     @request = Request.new
-    authorize @request
+    authorize @request, :new?
   end
 
   def create
@@ -20,11 +20,13 @@ class RequestsController < ApplicationController
   end
 
   def destroy
+    authorize @request
     @request.destroy
     redirect_to requests_url, notice: 'Request was successfully destroyed.'
   end
 
   def accept
+    authorize @request
     if @request.update(status: 'accepted')
       redirect_to @request, notice: 'Request was accepted.'
     else
@@ -33,6 +35,7 @@ class RequestsController < ApplicationController
   end
 
   def reject
+    authorize @request
     @request.update(status: 'rejected')
     redirect_to @request, notice: 'Request was rejected.'
   end
@@ -41,7 +44,6 @@ class RequestsController < ApplicationController
 
   def set_request
     @request = Request.find(params[:id])
-    authorize @request
   end
 
   def request_params

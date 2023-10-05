@@ -3,6 +3,7 @@ class CollectionsController < ApplicationController
   before_action :set_collection, only: [:show, :edit, :update, :destroy]
 
   def index
+    @collections = policy_scope(Collection)
     @collections = Collection.all
   end
 
@@ -11,7 +12,12 @@ class CollectionsController < ApplicationController
 
   def new
     @collection = Collection.new
-    authorize @collection
+    begin
+      authorize @collection
+    rescue Pundit::NotAuthorizedError => e
+      Rails.logger.debug("Authorization failed for user: #{current_user.inspect}")
+      Rails.logger.error("Authorization error: #{e.message}")
+    end
   end
 
   def create

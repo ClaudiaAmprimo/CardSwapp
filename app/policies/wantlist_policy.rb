@@ -5,6 +5,10 @@ class WantlistPolicy < ApplicationPolicy
       scope.all
     end
 
+    def new?
+      true
+    end
+
     def show?
       return true
     end
