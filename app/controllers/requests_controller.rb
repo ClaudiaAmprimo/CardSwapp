@@ -4,11 +4,13 @@ class RequestsController < ApplicationController
 
   def new
     @request = Request.new
+    authorize @request
   end
 
   def create
     @request = Request.new(request_params)
     @request.sender_id = current_user.id
+    authorize @request
 
     if @request.save
       redirect_to @request, notice: 'Request was successfully created.'
@@ -39,6 +41,7 @@ class RequestsController < ApplicationController
 
   def set_request
     @request = Request.find(params[:id])
+    authorize @request
   end
 
   def request_params
