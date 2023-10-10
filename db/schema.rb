@@ -10,18 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_04_093704) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_10_091011) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "cards", force: :cascade do |t|
-    t.string "name"
-    t.string "set"
-    t.string "rarity"
-    t.string "type"
+    t.string "name", null: false
+    t.string "set", null: false
+    t.string "rarity", null: false
+    t.string "type", null: false
     t.string "image_url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_cards_on_name"
   end
 
   create_table "collections", force: :cascade do |t|
@@ -62,6 +63,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_04_093704) do
     t.bigint "user_2_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "status", default: "initiated", null: false
+    t.index ["status"], name: "index_trades_on_status"
     t.index ["user_1_id"], name: "index_trades_on_user_1_id"
     t.index ["user_2_id"], name: "index_trades_on_user_2_id"
   end
@@ -79,6 +82,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_04_093704) do
     t.string "last_name"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["username"], name: "index_users_on_username"
   end
 
   create_table "wantlists", force: :cascade do |t|
