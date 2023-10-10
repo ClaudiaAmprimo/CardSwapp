@@ -1,9 +1,11 @@
 class TradesController < ApplicationController
   def index
-    @trade = Trade.all
+    @trades = policy_scope(Trade)
+    @trades = Trade.all
   end
 
   def show
     @trade = Trade.find(params[:id])
+    authorize @trade
   end
 end

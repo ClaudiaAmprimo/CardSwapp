@@ -3,19 +3,27 @@ class CollectionsController < ApplicationController
   before_action :set_collection, only: [:show, :edit, :update, :destroy]
 
   def index
+    @collections = policy_scope(Collection)
     @collections = Collection.all
   end
 
   def show
-
   end
 
   def new
     @collection = Collection.new
+    begin
+      authorize @collection
+    rescue Pundit::NotAuthorizedError => e
+      Rails.logger.debug("Authorization failed for user: #{current_user.inspect}")
+      Rails.logger.error("Authorization error: #{e.message}")
+    end
   end
 
   def create
     @collection = Collection.new(collection_params)
+    @collection.user = current.user
+    authorize @collection
 
     if @collection.save
       redirect_to @collection, notice: 'Collection was successfully created.'
@@ -25,7 +33,6 @@ class CollectionsController < ApplicationController
   end
 
   def edit
-
   end
 
   def update
@@ -45,6 +52,7 @@ class CollectionsController < ApplicationController
 
   def set_collection
     @collection = Collection.find(params[:id])
+    authorize @collection
   end
 
   def collection_params

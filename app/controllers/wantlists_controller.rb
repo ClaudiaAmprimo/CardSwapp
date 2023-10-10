@@ -1,7 +1,9 @@
 class WantlistsController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_wantlist, only: [:show, :edit, :update, :destroy]
 
   def index
+    @wantlists = policy_scope(Wantlist)
     @wantlists = Wantlist.all
   end
 
@@ -10,10 +12,19 @@ class WantlistsController < ApplicationController
 
   def new
     @wantlist = Wantlist.new
+    begin
+      authorize @wantlist
+    rescue Pundit::NotAuthorizedError => e
+      Rails.logger.debug("Authorization failed for user: #{current_user.inspect}")
+      Rails.logger.error("Authorization error: #{e.message}")
+    end
   end
 
   def create
     @wantlist = Wantlist.new(wantlist_params)
+    @wantlist.user = current.user
+    authorize @wantlist
+
     if @wantlist.save
       redirect_to @wantlist, notice: 'Wantlist was successfully created.'
     else
@@ -38,8 +49,9 @@ class WantlistsController < ApplicationController
   end
 
   private
-  
+
   def set_wantlist
+    authorize @wantlist
     @wantlist = Wantlist.find(params[:id])
   end
 

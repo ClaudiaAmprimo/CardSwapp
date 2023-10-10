@@ -4,11 +4,13 @@ class RequestsController < ApplicationController
 
   def new
     @request = Request.new
+    authorize @request, :new?
   end
 
   def create
     @request = Request.new(request_params)
     @request.sender_id = current_user.id
+    authorize @request
 
     if @request.save
       redirect_to @request, notice: 'Request was successfully created.'
@@ -18,11 +20,13 @@ class RequestsController < ApplicationController
   end
 
   def destroy
+    authorize @request
     @request.destroy
     redirect_to requests_url, notice: 'Request was successfully destroyed.'
   end
 
   def accept
+    authorize @request
     if @request.update(status: 'accepted')
       redirect_to @request, notice: 'Request was accepted.'
     else
@@ -31,6 +35,7 @@ class RequestsController < ApplicationController
   end
 
   def reject
+    authorize @request
     @request.update(status: 'rejected')
     redirect_to @request, notice: 'Request was rejected.'
   end
