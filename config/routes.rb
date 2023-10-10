@@ -5,12 +5,12 @@ Rails.application.routes.draw do
   resources :cards, only: [:index, :show]
 
   resources :trades do
-    resources :requests, only: [:new, :create]
+    resources :requests, only: [:new, :create], shallow: true
   end
 
   resources :requests, only: [:destroy]
 
-  resources :collections, only: [:index, :show, :new, :create, :edit, :update, :destroy] do
+  resources :collections, shallow: true do
     resources :cards, only: [:new, :create, :edit, :update, :destroy]
   end
 
