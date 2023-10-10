@@ -1,1 +1,4 @@
 <h1>New Cards on CardSwapp</h1>
+<% @cards.each do |card| %>
+<img src="<%= card.image_url %>" alt="<%= card.name %>">
+<% end %>
