@@ -1,7 +1,10 @@
 class CardsController < ApplicationController
   def index
-    @cards = policy_scope(Card)
-    # @cards = Card.all
+    if params[:query].present?
+      @cards = policy_scope(Card).where("name ILIKE ?", "%#{params[:query]}%")
+    else
+      @cards = policy_scope(Card)
+    end
   end
 
   def show
