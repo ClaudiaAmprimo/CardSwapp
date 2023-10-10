@@ -4,7 +4,6 @@ class CollectionsController < ApplicationController
 
   def index
     @collections = policy_scope(Collection)
-    @collections = Collection.all
   end
 
   def show
@@ -22,7 +21,7 @@ class CollectionsController < ApplicationController
 
   def create
     @collection = Collection.new(collection_params)
-    @collection.user = current.user
+    @collection.user = current_user
     authorize @collection
 
     if @collection.save

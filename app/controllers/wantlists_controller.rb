@@ -22,7 +22,7 @@ class WantlistsController < ApplicationController
 
   def create
     @wantlist = Wantlist.new(wantlist_params)
-    @wantlist.user = current.user
+    @wantlist.user = current_user
     authorize @wantlist
 
     if @wantlist.save
