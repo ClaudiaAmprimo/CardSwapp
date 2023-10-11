@@ -11,6 +11,7 @@ class CollectionsController < ApplicationController
 
   def new
     @collection = Collection.new
+    @cards = Card.all
     begin
       authorize @collection
     rescue Pundit::NotAuthorizedError => e
@@ -20,16 +21,21 @@ class CollectionsController < ApplicationController
   end
 
   def create
-    @collection = Collection.new(collection_params)
+    @collection = Collection.new
     @collection.user = current_user
     authorize @collection
 
     if @collection.save
+      if params[:collection][:card_ids].present?
+        selected_cards = Card.find(params[:collection][:card_ids])
+        @collection.cards << selected_cards
+      end
       redirect_to @collection, notice: 'Collection was successfully created.'
     else
       render :new
     end
   end
+
 
   def edit
   end
@@ -71,6 +77,7 @@ class CollectionsController < ApplicationController
   end
 
   def collection_params
-    params.require(:collection).permit(:user_id, :card_id)
+    params.require(:collection).permit(:user_id)
   end
+
 end

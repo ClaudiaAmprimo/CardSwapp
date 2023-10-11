@@ -12,4 +12,5 @@ class CardsController < ApplicationController
     @card = Card.find(params[:id])
     authorize @card
   end
+
 end

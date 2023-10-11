@@ -1,4 +1,5 @@
 class Collection < ApplicationRecord
   belongs_to :user
-  has_many :cards
+  has_and_belongs_to_many :cards
+  validates :user, presence: true 
 end
