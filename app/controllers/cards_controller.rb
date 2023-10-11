@@ -3,7 +3,8 @@ class CardsController < ApplicationController
     if params[:query].present?
       @cards = policy_scope(Card).where("name ILIKE ?", "%#{params[:query]}%")
     else
-      @cards = policy_scope(Card)
+      # @cards = policy_scope(Card)
+      @cards = policy_scope(Card).order(created_at: :desc).limit(12)
     end
   end
 

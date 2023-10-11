@@ -1,1 +1,8 @@
 <h1>My Collections</h1>
+<h2>Your Collection</h2>
+<% @collections.each do |collection| %>
+  <div>
+    <img src="<%= collection.card.image_url %>" alt="<%= collection.card.name %>">
+    <p><%= collection.card.name %></p>
+  </div>
+<% end %>

@@ -47,6 +47,22 @@ class CollectionsController < ApplicationController
     redirect_to collections_url, notice: 'Collection was successfully destroyed.'
   end
 
+  def add_to_collection
+    @collection = current_user.build_collection(collection_params) unless current_user.collection
+    @collection ||= current_user.collection
+    card = Card.find(params[:card_id])
+
+    unless @collection.cards.include?(card)
+      @collection.cards << card
+      flash[:notice] = "Card added to your collection!"
+    else
+      flash[:alert] = "You already have this card in your collection."
+    end
+
+    redirect_to cards_path
+  end
+
+
   private
 
   def set_collection
