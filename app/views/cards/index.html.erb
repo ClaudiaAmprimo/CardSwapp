@@ -14,14 +14,19 @@
 </div>
 
 <% if @cards.any? %>
-  <% @cards.each do |card| %>
-    <img src="<%= card.image_url %>" alt="<%= card.name %>">
-  <% end %>
+  <div class="row">
+    <% @cards.each do |card| %>
+      <div class="col-md-4">
+        <div class="card mb-4">
+          <img src="<%= card.image_url %>" alt="<%= card.name %>" class="card-img-top">
+          <div class="card-body">
+            <h5 class="card-title"><%= card.name %></h5>
+            <%= button_to 'HAVE', add_to_collection_collections_path(card_id: card.id), method: :post, class: 'btn btn-primary' %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
 <% else %>
   <p>No cards found for '<%= params[:query] %>'</p>
-<% end %>
-
-
-<% @cards.each do |card| %>
-<img src="<%= card.image_url %>" alt="<%= card.name %>">
 <% end %>

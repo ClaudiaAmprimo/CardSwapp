@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   resources :requests, only: [:destroy]
 
   resources :collections, shallow: true do
+    post 'add_to_collection', on: :collection
     resources :cards, only: [:new, :create, :edit, :update, :destroy]
   end
 
