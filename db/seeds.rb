@@ -20,10 +20,10 @@ loop do
   cards.each do |card_data|
     Card.create(
       name: card_data['name'],
-      set: card_data['set']['name'], # Assuming set data is nested
+      set: card_data['set']['name'],
       rarity: card_data['rarity'],
-      type: card_data['types']&.join(', '), # Assuming types is an array
-      image_url: card_data['images']['large'] # Assuming image URL is under 'images' key
+      type: card_data['types']&.join(', '),
+      image_url: card_data['images']['large'] 
     )
   end
   page += 1

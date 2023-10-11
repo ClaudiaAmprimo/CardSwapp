@@ -1,1 +1,26 @@
 <h1>here we should render a form</h1>
+<%= form_with(model: @collection, local: true) do |form| %>
+
+  <% if @cards.any? %>
+    <div class="form-group">
+      <div class="form-group">
+        <%= form.submit "Create Collection", class: 'btn btn-primary' %>
+      </div>
+      <%= form.label :card_ids, "Select Cards" %>
+      <ul>
+        <% @cards.each do |card| %>
+          <li>
+            <%= check_box_tag 'collection[card_ids][]', card.id, @collection.card_ids.include?(card.id), id: dom_id(card) %>
+
+            <%= label_tag dom_id(card) do %>
+              <%= image_tag card.image_url, size: "200x300" %>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  <% else %>
+    <p>No cards available.</p>
+  <% end %>
+
+<% end %>

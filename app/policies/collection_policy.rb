@@ -4,10 +4,11 @@ class CollectionPolicy < ApplicationPolicy
     def resolve
       scope.all
     end
+  end
 
     def new?
-      # user.present?
-      user.present?.tap { |result| Rails.logger.debug("Authorization result: #{result}") }
+      user.present?
+      # user.present?.tap { |result| Rails.logger.debug("Authorization result: #{result}") }
     end
 
     def show?
@@ -26,7 +27,6 @@ class CollectionPolicy < ApplicationPolicy
     def destroy?
       user_is_owner?
     end
-  end
 
   private
 
