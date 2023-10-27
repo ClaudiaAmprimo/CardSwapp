@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_11_123147) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_27_152031) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -90,12 +90,19 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_11_123147) do
     t.index ["username"], name: "index_users_on_username"
   end
 
-  create_table "wantlists", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.bigint "card_id", null: false
+  create_table "wantlist_items", force: :cascade do |t|
+    t.bigint "wantlist_id"
+    t.bigint "card_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["card_id"], name: "index_wantlists_on_card_id"
+    t.index ["card_id"], name: "index_wantlist_items_on_card_id"
+    t.index ["wantlist_id"], name: "index_wantlist_items_on_wantlist_id"
+  end
+
+  create_table "wantlists", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_wantlists_on_user_id"
   end
 
@@ -108,6 +115,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_11_123147) do
   add_foreign_key "trade_items", "users"
   add_foreign_key "trades", "users", column: "user_1_id"
   add_foreign_key "trades", "users", column: "user_2_id"
-  add_foreign_key "wantlists", "cards"
+  add_foreign_key "wantlist_items", "cards"
+  add_foreign_key "wantlist_items", "wantlists"
   add_foreign_key "wantlists", "users"
 end

@@ -1,28 +1,38 @@
 class WantlistPolicy < ApplicationPolicy
+  attr_reader :user, :wantlist
+
+  def initialize(user, wantlist)
+    @user = user
+    @wantlist = wantlist
+  end
+
+  def new?
+    true
+  end
+
+  def show?
+    true
+  end
+
+  def create?
+    true
+  end
+
+  def update?
+    user_is_owner?
+  end
+
+  def destroy?
+    user_is_owner?
+  end
+
+  def add_to_wantlist?
+    user == wantlist.user
+  end
+
   class Scope < Scope
-    # NOTE: Be explicit about which records you allow access to!
     def resolve
       scope.all
-    end
-
-    def new?
-      true
-    end
-
-    def show?
-      return true
-    end
-
-    def create?
-      return true
-    end
-
-    def update?
-      user_is_owner?
-    end
-
-    def destroy?
-      user_is_owner?
     end
   end
 
