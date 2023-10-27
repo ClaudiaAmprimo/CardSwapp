@@ -1,1 +1,11 @@
 <h1>My Wantlist</h1>
+<% if current_user.wantlist.present? %>
+  <% current_user.wantlist.cards.each do |card| %>
+    <div>
+      <img src="<%= card.image_url %>" alt="<%= card.name %>">
+      <p><%= card.name %></p>
+    </div>
+  <% end %>
+<% else %>
+  <p>You have no wantlist created yet.</p>
+<% end %>

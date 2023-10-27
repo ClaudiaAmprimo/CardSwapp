@@ -49,13 +49,12 @@ class WantlistsController < ApplicationController
   end
 
   def add_to_wantlist
-    @wantlist = current_user.build_wantlist(wantlist_params) unless current_user.wantlist
-    @wantlist ||= current_user.wantlist
+    wantlist = current_user.wantlist || current_user.create_wantlist
     card = Card.find(params[:card_id])
-    authorize @wantlist
+    authorize wantlist, :add_to_wantlist?
 
-    unless @wantlist.cards.include?(card)
-      @wantlist.cards << card
+    unless wantlist.cards.include?(card)
+      wantlist.cards << card
       flash[:notice] = "Card added to your wantlist!"
     else
       flash[:alert] = "You already have this card in your wantlist."

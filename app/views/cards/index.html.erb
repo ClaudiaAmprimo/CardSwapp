@@ -22,6 +22,7 @@
           <div class="card-body">
             <h5 class="card-title"><%= card.name %></h5>
             <%= button_to 'HAVE', add_to_collection_collections_path(card_id: card.id), method: :post, class: 'btn btn-primary' %>
+            <%= button_to 'WANT', add_to_wantlist_wantlists_path(card_id: card.id), method: :post, class: 'btn btn-primary' %>
           </div>
         </div>
       </div>

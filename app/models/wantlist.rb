@@ -1,4 +1,6 @@
 class Wantlist < ApplicationRecord
   belongs_to :user
-  belongs_to :card
+
+  has_many :wantlist_items
+  has_many :cards, through: :wantlist_items
 end
