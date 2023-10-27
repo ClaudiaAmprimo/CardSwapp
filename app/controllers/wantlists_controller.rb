@@ -48,6 +48,23 @@ class WantlistsController < ApplicationController
     redirect_to wantlists_url, notice: 'Wantlist was successfully destroyed.'
   end
 
+  def add_to_wantlist
+    @wantlist = current_user.build_wantlist(wantlist_params) unless current_user.wantlist
+    @wantlist ||= current_user.wantlist
+    card = Card.find(params[:card_id])
+    authorize @wantlist
+
+    unless @wantlist.cards.include?(card)
+      @wantlist.cards << card
+      flash[:notice] = "Card added to your wantlist!"
+    else
+      flash[:alert] = "You already have this card in your wantlist."
+    end
+
+    redirect_to cards_path
+  end
+
+
   private
 
   def set_wantlist

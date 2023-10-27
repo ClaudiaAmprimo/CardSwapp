@@ -5,4 +5,5 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
   has_one :collection
   has_many :trades
+  has_one :wantlist
 end

@@ -28,6 +28,10 @@ class CollectionPolicy < ApplicationPolicy
       user_is_owner?
     end
 
+    def add_to_collection?
+      user.present?
+    end
+    
   private
 
   def user_is_owner?
