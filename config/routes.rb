@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   end
 
   resources :wantlists, only: [:index, :show, :new, :create, :edit, :update, :destroy]
+  post 'wantlists/add_to_wantlist', to: 'wantlists#add_to_wantlist', as: 'add_to_wantlist_wantlists'
 
   resources :trade_items, only: [:index, :show]
 

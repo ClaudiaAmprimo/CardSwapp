@@ -57,6 +57,7 @@ class CollectionsController < ApplicationController
     @collection = current_user.build_collection(collection_params) unless current_user.collection
     @collection ||= current_user.collection
     card = Card.find(params[:card_id])
+    authorize @collection 
 
     unless @collection.cards.include?(card)
       @collection.cards << card
