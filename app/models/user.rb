@@ -6,4 +6,5 @@ class User < ApplicationRecord
   has_one :collection
   has_many :trades
   has_one :wantlist
+  has_one_attached :photo
 end
