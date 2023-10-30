@@ -12,6 +12,7 @@ Rails.application.routes.draw do
 
   resources :collections, shallow: true do
     post 'add_to_collection', on: :collection
+    delete 'remove_from_collection', on: :member
     resources :cards, only: [:new, :create, :edit, :update, :destroy]
   end
 

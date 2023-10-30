@@ -21,17 +21,23 @@ class CollectionPolicy < ApplicationPolicy
     end
 
     def update?
-      user_is_owner?
+      # user_is_owner?
+      record.user == user
     end
 
     def destroy?
-      user_is_owner?
+      # user_is_owner?
+      record.user == user
     end
 
     def add_to_collection?
       user.present?
     end
-    
+
+    def remove_from_collection?
+      record.user == user
+    end
+
   private
 
   def user_is_owner?

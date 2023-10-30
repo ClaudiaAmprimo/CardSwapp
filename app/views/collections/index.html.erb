@@ -1,10 +1,10 @@
-<h1>My Collections</h1>
-<h2>Your Collection</h2>
+<h2>My Collection</h2>
+
 <% @collections.each do |collection| %>
   <% collection.cards.each do |card| %>
-    <div>
-      <img src="<%= card.image_url %>" alt="<%= card.name %>">
-      <p><%= card.name %></p>
-    </div>
+  <div>
+  <img src="<%= card.image_url %>" alt="<%= card.name %>">
+    <%= button_to 'REMOVE FROM COLLECTION', remove_from_collection_collection_path(collection, card_id: card.id), method: :delete, class: 'btn btn-danger' %>
+  </div>
   <% end %>
 <% end %>

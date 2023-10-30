@@ -36,7 +36,6 @@ class CollectionsController < ApplicationController
     end
   end
 
-
   def edit
   end
 
@@ -49,15 +48,18 @@ class CollectionsController < ApplicationController
   end
 
   def destroy
+    authorize @collection
     @collection.destroy
     redirect_to collections_url, notice: 'Collection was successfully destroyed.'
   end
 
   def add_to_collection
-    @collection = current_user.build_collection(collection_params) unless current_user.collection
-    @collection ||= current_user.collection
+    # @collection = current_user.build_collection(collection_params) unless current_user.collection
+    # @collection = current_user.create_collection(collection_params) unless current_user.collection
+    # @collection ||= current_user.collection
+    @collection = current_user.collection || current_user.create_collection
     card = Card.find(params[:card_id])
-    authorize @collection 
+    authorize @collection
 
     unless @collection.cards.include?(card)
       @collection.cards << card
@@ -69,6 +71,16 @@ class CollectionsController < ApplicationController
     redirect_to cards_path
   end
 
+  def remove_from_collection
+    @collection = Collection.find(params[:id])
+    card = Card.find(params[:card_id])
+    authorize @collection
+
+    # Assuming you have a many-to-many association between collections and cards
+    @collection.cards.delete(card)
+
+    redirect_to collections_path, notice: 'Card removed from collection!'
+  end
 
   private
 
