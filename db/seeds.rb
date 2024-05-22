@@ -11,20 +11,45 @@ require 'json'
 base_url = 'https://api.pokemontcg.io/v2/cards'
 page = 1
 per_page = 100
+
 loop do
   response = HTTParty.get(base_url, query: { page: page, pageSize: per_page })
+
+  if response.code != 200
+    puts "Error: #{response.message} (status code: #{response.code})"
+    break
+  end
+
   data = JSON.parse(response.body)
   cards = data['data']
-  break if cards.empty?
 
-  cards.each do |card_data|
-    Card.create(
-      name: card_data['name'],
-      set: card_data['set']['name'],
-      rarity: card_data['rarity'],
-      type: card_data['types']&.join(', '),
-      image_url: card_data['images']['large'] 
-    )
+  if cards.nil? || cards.empty?
+    puts "No more cards to fetch."
+    break
   end
+
+  puts "Fetched page #{page} with #{cards.size} cards."
+
+  ActiveRecord::Base.transaction do
+    cards.each do |card_data|
+      begin
+        card = Card.create!(
+          name: card_data['name'],
+          set: card_data['set']['name'],
+          rarity: card_data['rarity'],
+          type: card_data['types']&.join(', '),
+          image_url: card_data['images']['large']
+        )
+        puts "Created card: #{card.name}"
+      rescue => e
+        puts "Error creating card: #{e.message}"
+        puts "Card data: #{card_data.inspect}"
+      end
+    end
+  end
+
   page += 1
+
+  # Sleep to avoid hitting rate limits
+  sleep(1)
 end
